@@ -1,7 +1,9 @@
 {
   "resources":[
     {"pattern":"\\Q.version\\E"},
-    {"pattern":"\\Qgit.properties\\E"}
+    {"pattern":"\\Qlog4j2.xml\\E"},
+    {"pattern":"\\Qgit.properties\\E"},
+    {"pattern":"\\Qredis-rdb-cli.conf\\E"}
   ],
   "bundles":[]
 }
