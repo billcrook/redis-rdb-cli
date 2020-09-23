@@ -16,6 +16,12 @@
 
 package com.moilioncircle.redis.rdb.cli;
 
+import com.moilioncircle.redis.rdb.cli.cmd.RctCommand;
+import com.moilioncircle.redis.rdb.cli.cmd.RdtCommand;
+import com.moilioncircle.redis.rdb.cli.cmd.RetCommand;
+import com.moilioncircle.redis.rdb.cli.cmd.RmtCommand;
+import com.moilioncircle.redis.rdb.cli.cmd.RstCommand;
+
 /**
  * @author Baoyi Chen
  */
@@ -25,19 +31,19 @@ public class Main {
 		System.arraycopy(args, 1, args0, 0, args0.length);
 		switch (args[0]) {
 			case "rct":
-				Rct.main(args0);
+				RctCommand.run(args0);
 				break;
 			case "rdt":
-				Rdt.main(args0);
+				RdtCommand.run(args0);
 				break;
 			case "ret":
-				Ret.main(args0);
+				RetCommand.run(args0);
 				break;
 			case "rmt":
-				Rmt.main(args0);
+				RmtCommand.run(args0);
 				break;
 			case "rst":
-				Rst.main(args0);
+				RstCommand.run(args0);
 				break;
 			default:
 				throw new UnsupportedOperationException(args[0]);
