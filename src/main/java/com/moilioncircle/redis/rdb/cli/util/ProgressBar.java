@@ -20,9 +20,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
-
 /**
  * @author Baoyi Chen
  */
@@ -33,7 +30,6 @@ public class ProgressBar implements Closeable {
     private volatile int max = 0;
     private volatile boolean bit;
     private volatile String file;
-    private final Terminal terminal;
     private volatile double percentage;
     private AtomicLong num = new AtomicLong();
     private volatile long atime = System.currentTimeMillis();
@@ -41,7 +37,6 @@ public class ProgressBar implements Closeable {
     public ProgressBar(long total) throws IOException {
         this.total = total;
         this.ctime = System.currentTimeMillis();
-        this.terminal = TerminalBuilder.builder().dumb(true).build();
     }
 
     public void react(long num) {
@@ -79,7 +74,7 @@ public class ProgressBar implements Closeable {
         this.file = file;
         this.atime = now;
         this.max = Math.max(Strings.length(file), max);
-        int len = Math.max(terminal.getWidth(), 120);
+        int len = 120;
 
         StringBuilder builder = new StringBuilder();
         if (bit) {
