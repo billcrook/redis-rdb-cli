@@ -1,2 +1,9 @@
 [
+  {
+    "name": "com.moilioncircle.redis.replicator.RedisSocketReplicator",
+    "fields": [
+      { "name": "host"},
+      { "name": "port"}
+    ]
+  }
 ]
