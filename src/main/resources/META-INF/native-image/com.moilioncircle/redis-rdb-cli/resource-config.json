@@ -3,7 +3,9 @@
     {"pattern":"\\Q.version\\E"},
     {"pattern":"\\Qlog4j2.xml\\E"},
     {"pattern":"\\Qgit.properties\\E"},
-    {"pattern":"\\Qredis-rdb-cli.conf\\E"}
+    {"pattern":"\\Qredis-rdb-cli.conf\\E"},
+    {"pattern":"\\QMETA-INF/services/com.moilioncircle.redis.sink.api.SinkService\\E"},
+    {"pattern":"\\QMETA-INF/services/com.moilioncircle.redis.sink.api.ParserService\\E"}
   ],
   "bundles":[]
 }
