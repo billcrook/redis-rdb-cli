@@ -47,18 +47,18 @@ import com.moilioncircle.redis.replicator.util.Strings;
 public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
 
     private Escaper redis;
-    private boolean firstkey = true;
-    
+    protected boolean firstkey = true;
+
     public AbstractJsonRdbVisitor(Replicator replicator, Configure configure, Args.RctArgs args, Escaper escaper) {
         super(replicator, configure, args, escaper);
         this.redis = new RedisEscaper(configure.getDelimiter(), configure.getQuote());
     }
 
     /**
-     * 
+     *
      */
     protected abstract void separator();
-    
+
     public static interface Emitable {
         void emitValue() throws IOException;
     }
@@ -91,7 +91,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         }
         Outputs.write('}', out);
     }
-    
+
     @Override
     protected Event doApplyString(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -122,7 +122,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplySet(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -143,7 +143,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplySetListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -170,7 +170,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyZSet(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -192,7 +192,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyZSet2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -214,7 +214,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyHash(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -236,7 +236,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyHashZipMap(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -270,7 +270,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyListZipList(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -298,7 +298,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplySetIntSet(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -333,7 +333,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyZSetZipList(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -363,7 +363,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyZSetListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -392,7 +392,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyHashZipList(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -422,7 +422,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyHashListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -451,7 +451,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyListQuickList(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -482,7 +482,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyListQuickList2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -523,7 +523,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyHashMetadata(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -553,7 +553,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyHashListPackEx(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -591,7 +591,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyModule(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -605,7 +605,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyModule2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -619,7 +619,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyStreamListPacks(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -633,7 +633,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyStreamListPacks2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
@@ -651,7 +651,7 @@ public abstract class AbstractJsonRdbVisitor extends AbstractRctRdbVisitor {
         });
         return context.valueOf(new DummyKeyValuePair());
     }
-    
+
     @Override
     protected Event doApplyStreamListPacks3(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
