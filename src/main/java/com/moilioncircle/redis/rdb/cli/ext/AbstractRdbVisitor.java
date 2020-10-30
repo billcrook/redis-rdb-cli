@@ -121,10 +121,14 @@ public abstract class AbstractRdbVisitor extends DefaultRdbVisitor {
         replicator.addEventListener((rep, event) -> {
             if (event instanceof PreRdbSyncEvent) {
                 OutputStreams.closeQuietly(this.out);
-                this.out = OutputStreams.newBufferedOutputStream(output, configure.getBufferSize());
+                this.out = this.createOutputStream(output);
             }
         });
         replicator.addCloseListener(rep -> OutputStreams.closeQuietly(out));
+    }
+
+    protected OutputStream createOutputStream(File output) {
+        return OutputStreams.newBufferedOutputStream(output, configure.getBufferSize());
     }
 
     /**

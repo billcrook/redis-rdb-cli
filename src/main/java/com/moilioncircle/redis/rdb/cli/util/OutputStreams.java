@@ -21,9 +21,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.concurrent.Callable;
 
 import com.moilioncircle.redis.replicator.io.CRCOutputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 
 /**
  * @author Baoyi Chen
@@ -159,5 +161,12 @@ public class OutputStreams {
     
     public static CRCOutputStream newCRCOutputStream(File file, int buf) {
         return call(() -> new CRCOutputStream(new BufferedOutputStream(new FileOutputStream(file), buf)));
+    }
+
+    public static OutputStream newBZip2OutputStream(File file, int buf) {
+        return call(() -> {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file), buf);
+            return new BZip2CompressorOutputStream(out);
+        });
     }
 }
