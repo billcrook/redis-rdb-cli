@@ -20,17 +20,7 @@ import java.io.File;
 import java.util.List;
 
 import com.moilioncircle.redis.rdb.cli.conf.Configure;
-import com.moilioncircle.redis.rdb.cli.ext.rct.CountRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.DiffRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.DumpRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.JsonRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlZSetExplodeRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlHashExplodeRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.KeyRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.KeyValRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.MemRdbVisitor;
-import com.moilioncircle.redis.rdb.cli.ext.rct.RespRdbVisitor;
+import com.moilioncircle.redis.rdb.cli.ext.rct.*;
 import com.moilioncircle.redis.replicator.Replicator;
 
 /**
@@ -44,6 +34,7 @@ public enum Format {
     JSON("json"),
     RESP("resp"),
     JSONL("jsonl"),
+    JSONLBZ2("jsonlbz2"),
     JSONLZSETEXPLODE("jsonlzsetexplode"),
     JSONLHASHEXPLODE("jsonlhashexplode"),
     COUNT("count"),
@@ -75,6 +66,8 @@ public enum Format {
                 return RESP;
             case "jsonl":
                 return JSONL;
+            case "jsonlbz2":
+                return JSONLBZ2;
             case "jsonlzsetexplode":
                 return JSONLZSETEXPLODE;
             case "jsonlhashexplode":
@@ -110,6 +103,9 @@ public enum Format {
                 break;
             case JSONL:
                 r.setRdbVisitor(new JsonlRdbVisitor(r, conf, output, db, regexs, types, escape));
+                break;
+            case JSONLBZ2:
+                r.setRdbVisitor(new JsonlBZ2RdbVisitor(r, conf, output, db, regexs, types, escape));
                 break;
             case DUMP:
                 r.setRdbVisitor(new DumpRdbVisitor(r, conf, output, db, regexs, types, replace));
