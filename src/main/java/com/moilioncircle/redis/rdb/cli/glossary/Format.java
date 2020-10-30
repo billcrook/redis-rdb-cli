@@ -25,6 +25,8 @@ import com.moilioncircle.redis.rdb.cli.ext.rct.DiffRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.DumpRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.JsonRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlRdbVisitor;
+import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlZSetExplodeRdbVisitor;
+import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlHashExplodeRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.KeyRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.KeyValRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.MemRdbVisitor;
@@ -42,6 +44,8 @@ public enum Format {
     JSON("json"),
     RESP("resp"),
     JSONL("jsonl"),
+    JSONLZSETEXPLODE("jsonlzsetexplode"),
+    JSONLHASHEXPLODE("jsonlhashexplode"),
     COUNT("count"),
     KEYVAL("keyval");
 
@@ -71,7 +75,11 @@ public enum Format {
                 return RESP;
             case "jsonl":
                 return JSONL;
-            case "count":
+            case "jsonlzsetexplode":
+                return JSONLZSETEXPLODE;
+            case "jsonlhashexplode":
+                return JSONLHASHEXPLODE;
+                case "count":
                 return COUNT;
             case "keyval":
                 return KEYVAL;
@@ -93,6 +101,12 @@ public enum Format {
                 break;
             case JSON:
                 r.setRdbVisitor(new JsonRdbVisitor(r, conf, output, db, regexs, types, escape));
+                break;
+            case JSONLZSETEXPLODE:
+                r.setRdbVisitor(new JsonlZSetExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
+                break;
+            case JSONLHASHEXPLODE:
+                r.setRdbVisitor(new JsonlHashExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
                 break;
             case JSONL:
                 r.setRdbVisitor(new JsonlRdbVisitor(r, conf, output, db, regexs, types, escape));

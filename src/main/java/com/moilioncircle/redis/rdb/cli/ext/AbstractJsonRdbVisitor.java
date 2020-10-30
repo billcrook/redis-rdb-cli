@@ -43,52 +43,52 @@ import com.moilioncircle.redis.replicator.util.Strings;
 public abstract class AbstractJsonRdbVisitor extends AbstractRdbVisitor {
 
     private Escaper escaper;
-    private boolean firstkey = true;
+    protected boolean firstkey = true;
     
     public AbstractJsonRdbVisitor(Replicator replicator, Configure configure, File out, List<Long> db, List<String> regexs, List<DataType> types, Escape escape) {
         super(replicator, configure, out, db, regexs, types, escape);
         this.escaper = new JsonEscape(escape);
     }
 
-    private void emitString(byte[] str) {
+    protected void emitString(byte[] str) {
         OutputStreams.write('"', out);
         escaper.encode(str, out, configure);
         OutputStreams.write('"', out);
     }
 
-    private void emitField(String field, byte[] value) {
+    protected void emitField(String field, byte[] value) {
         emitField(field.getBytes(), value);
     }
 
-    private void emitField(String field, String value) {
+    protected void emitField(String field, String value) {
         emitField(field.getBytes(), value.getBytes());
     }
 
-    private void emitField(byte[] field, byte[] value) {
+    protected void emitField(byte[] field, byte[] value) {
         emitString(field);
         OutputStreams.write(':', out);
         emitString(value);
     }
 
-    private void emitNull(byte[] field) {
+    protected void emitNull(byte[] field) {
         emitString(field);
         OutputStreams.write(':', out);
         escaper.encode("null".getBytes(), out, configure);
     }
 
-    private void emitZSet(byte[] field, double value) {
+    protected void emitZSet(byte[] field, double value) {
         emitString(field);
         OutputStreams.write(':', out);
         escaper.encode(value, out, configure);
     }
 
-    private void emitField(String field, int value) {
+    protected void emitField(String field, int value) {
         emitString(field.getBytes());
         OutputStreams.write(':', out);
         escaper.encode(String.valueOf(value).getBytes(), out, configure);
     }
 
-    private void emitField(String field, long value) {
+    protected void emitField(String field, long value) {
         emitString(field.getBytes());
         OutputStreams.write(':', out);
         escaper.encode(String.valueOf(value).getBytes(), out, configure);
