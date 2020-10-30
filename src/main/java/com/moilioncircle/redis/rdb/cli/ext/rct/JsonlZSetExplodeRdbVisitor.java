@@ -4,7 +4,7 @@ import com.moilioncircle.redis.rdb.cli.conf.Configure;
 import com.moilioncircle.redis.rdb.cli.ext.datatype.DummyKeyValuePair;
 import com.moilioncircle.redis.rdb.cli.glossary.DataType;
 import com.moilioncircle.redis.rdb.cli.glossary.Escape;
-import com.moilioncircle.redis.rdb.cli.util.OutputStreams;
+import com.moilioncircle.redis.rdb.cli.util.Outputs;
 import com.moilioncircle.redis.replicator.Replicator;
 import com.moilioncircle.redis.replicator.event.Event;
 import com.moilioncircle.redis.replicator.io.RedisInputStream;
@@ -14,6 +14,7 @@ import com.moilioncircle.redis.replicator.util.Strings;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 
@@ -21,6 +22,10 @@ public class JsonlZSetExplodeRdbVisitor extends JsonlRdbVisitor {
 
     public JsonlZSetExplodeRdbVisitor(Replicator replicator, Configure configure, File out, List<Long> db, List<String> regexs, List<DataType> types, Escape escape) {
         super(replicator, configure, out, db, regexs, types, escape);
+    }
+
+    protected OutputStream createOutputStream(File output) {
+        return Outputs.newBZip2OutputStream(output, configure.getOutputBufferSize());
     }
 
     protected void emitZSetJson( byte[] key, byte[] element, double score){

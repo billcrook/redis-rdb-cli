@@ -39,30 +39,34 @@ import com.moilioncircle.redis.replicator.rdb.skip.SkipRdbParser;
  * @author Baoyi Chen
  */
 public abstract class AbstractRctRdbVisitor extends BaseRdbVisitor {
-	
+
 	protected Escaper escaper;
 	protected OutputStream out;
-	
+
 	public AbstractRctRdbVisitor(Replicator replicator, Configure configure, Args.RctArgs args, Escaper escaper) {
 		super(replicator, configure, args.filter);
 		this.escaper = escaper;
 		replicator.addEventListener((rep, event) -> {
 			if (event instanceof PreRdbSyncEvent) {
 				Outputs.closeQuietly(this.out);
-				this.out = Outputs.newBufferedOutput(args.output, configure.getOutputBufferSize());
+				this.out = this.createOutputStream(args.output)
 			}
 		});
 		replicator.addCloseListener(rep -> Outputs.closeQuietly(out));
 	}
-	
+
+        protected OutputStream createOutputStream(File output) {
+            return Outputs.newBufferedOutput(output, configure.getOutputBufferSize());
+        }
+
 	protected void delimiter(OutputStream out) {
 		Outputs.write(configure.getDelimiter(), out);
 	}
-	
+
 	protected void quote(byte[] bytes, OutputStream out) {
 		quote(bytes, out, true);
 	}
-	
+
 	protected void quote(byte[] bytes, OutputStream out, boolean escape) {
 		Outputs.write(configure.getQuote(), out);
 		if (escape) {
@@ -72,45 +76,45 @@ public abstract class AbstractRctRdbVisitor extends BaseRdbVisitor {
 		}
 		Outputs.write(configure.getQuote(), out);
 	}
-	
+
 	protected void emitField(String field, long value) {
 		emitString(field.getBytes());
 		Outputs.write(':', out);
 		escaper.encode(String.valueOf(value).getBytes(), out);
 	}
-	
+
 	protected void emitField(String field, byte[] value) {
 		emitField(field.getBytes(), value);
 	}
-	
+
 	protected void emitField(String field, String value) {
 		emitField(field.getBytes(), value.getBytes());
 	}
-	
+
 	protected void emitField(byte[] field, byte[] value) {
 		emitString(field);
 		Outputs.write(':', out);
 		emitString(value);
 	}
-	
+
 	protected void emitNull(byte[] field) {
 		emitString(field);
 		Outputs.write(':', out);
 		escaper.encode("null".getBytes(), out);
 	}
-	
+
 	protected void emitZSet(byte[] field, double value) {
 		emitString(field);
 		Outputs.write(':', out);
 		escaper.encode(value, out);
 	}
-	
+
 	protected void emitString(byte[] str) {
 		Outputs.write('"', out);
 		escaper.encode(str, out);
 		Outputs.write('"', out);
 	}
-	
+
 	protected Event doApplyStreamListPacks2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context, RawByteListener listener) throws IOException {
 		SkipRdbParser skipParser = new SkipRdbParser(in);
 		long listPacks = skipParser.rdbLoadLen().len;
@@ -155,7 +159,7 @@ public abstract class AbstractRctRdbVisitor extends BaseRdbVisitor {
 		if (version < 10) context.setValueRdbType(RDB_TYPE_STREAM_LISTPACKS);
 		return context.valueOf(new DummyKeyValuePair());
 	}
-	
+
 	protected Event doApplyStreamListPacks3(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context, RawByteListener listener) throws IOException {
 		SkipRdbParser skipParser = new SkipRdbParser(in);
 		long listPacks = skipParser.rdbLoadLen().len;

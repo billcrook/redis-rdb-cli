@@ -83,6 +83,11 @@
             <artifactId>redis-rdb-cli-api</artifactId>
             <version>1.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.20</version>
+        </dependency>
 
         <dependency>
             <groupId>redis.clients</groupId>
