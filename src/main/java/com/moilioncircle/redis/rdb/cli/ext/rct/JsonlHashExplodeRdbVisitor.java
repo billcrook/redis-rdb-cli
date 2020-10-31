@@ -49,7 +49,7 @@ public class JsonlHashExplodeRdbVisitor extends JsonlRdbVisitor {
         return context.valueOf(new DummyKeyValuePair());
     }
 
-    protected void emitHashJson(byte[] key, byte[] field, byte[] value){
+    protected void emitHashJson(byte[] key, byte[] field, byte[] value) throws IOException {
         OutputStreams.write('{', out);
         emitField("key", key);
 
