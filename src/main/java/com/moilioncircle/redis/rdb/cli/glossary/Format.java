@@ -37,6 +37,7 @@ public enum Format {
     JSONLBZ2("jsonlbz2"),
     JSONLZSETEXPLODE("jsonlzsetexplode"),
     JSONLHASHEXPLODE("jsonlhashexplode"),
+    JSONLKEYEDHASHEXPLODE("jsonlkeyedhashexplode"),
     COUNT("count"),
     KEYVAL("keyval");
 
@@ -72,7 +73,9 @@ public enum Format {
                 return JSONLZSETEXPLODE;
             case "jsonlhashexplode":
                 return JSONLHASHEXPLODE;
-                case "count":
+            case "jsonlkeyedhashexplode":
+                return JSONLKEYEDHASHEXPLODE;
+            case "count":
                 return COUNT;
             case "keyval":
                 return KEYVAL;
@@ -100,6 +103,9 @@ public enum Format {
                 break;
             case JSONLHASHEXPLODE:
                 r.setRdbVisitor(new JsonlHashExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
+                break;
+            case JSONLKEYEDHASHEXPLODE:
+                r.setRdbVisitor(new JsonlKeyedHashExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
                 break;
             case JSONL:
                 r.setRdbVisitor(new JsonlRdbVisitor(r, conf, output, db, regexs, types, escape));
