@@ -13,9 +13,6 @@ import com.moilioncircle.redis.replicator.rdb.datatype.ContextKeyValuePair;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -23,10 +20,6 @@ public class JsonlHashExplodeRdbVisitor extends JsonlRdbVisitor {
 
     public JsonlHashExplodeRdbVisitor(Replicator replicator, Configure configure, File out, List<Long> db, List<String> regexs, List<DataType> types, Escape escape) {
         super(replicator, configure, out, db, regexs, types, escape);
-    }
-
-    protected OutputStream createOutputStream(File output) {
-        return Outputs.newBZip2OutputStream(output, configure.getOutputBufferSize());
     }
 
     @Override
