@@ -166,7 +166,7 @@ public class Outputs {
     public static OutputStream newBZip2OutputStream(File file, int buf) {
         return call(() -> {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file), buf);
-            return new BZip2CompressorOutputStream(out);
+            return new BZip2CompressorOutputStream(out, 1);
         });
     }
 }
