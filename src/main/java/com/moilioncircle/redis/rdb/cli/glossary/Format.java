@@ -34,6 +34,7 @@ public enum Format {
     JSON("json"),
     RESP("resp"),
     JSONL("jsonl"),
+    JSONLZSET("jsonlzset"),
     JSONLBZ2("jsonlbz2"),
     JSONLZSETEXPLODE("jsonlzsetexplode"),
     JSONLHASHEXPLODE("jsonlhashexplode"),
@@ -67,6 +68,8 @@ public enum Format {
                 return RESP;
             case "jsonl":
                 return JSONL;
+            case "jsonlzset":
+                return JSONLZSET;
             case "jsonlbz2":
                 return JSONLBZ2;
             case "jsonlzsetexplode":
@@ -109,6 +112,9 @@ public enum Format {
                 break;
             case JSONL:
                 r.setRdbVisitor(new JsonlRdbVisitor(r, conf, output, db, regexs, types, escape));
+                break;
+            case JSONLZSET:
+                r.setRdbVisitor(new JsonlZSetRdbVisitor(r, conf, output, db, regexs, types, escape));
                 break;
             case JSONLBZ2:
                 r.setRdbVisitor(new JsonlBZ2RdbVisitor(r, conf, output, db, regexs, types, escape));
