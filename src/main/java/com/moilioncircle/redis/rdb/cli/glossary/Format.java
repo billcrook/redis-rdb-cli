@@ -36,6 +36,7 @@ import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlZSetExplodeRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlHashExplodeRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlKeyedHashExplodeRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlBZ2RdbVisitor;
+import com.moilioncircle.redis.rdb.cli.ext.rct.JsonlZSetRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.KeyRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.KeyValRdbVisitor;
 import com.moilioncircle.redis.rdb.cli.ext.rct.MemoryRdbVisitor;
@@ -90,6 +91,9 @@ public class Format {
                 break;
             case "keyval":
                 r.setRdbVisitor(new KeyValRdbVisitor(r, configure, args, getEscape(escape, configure)));
+            case "jsonlzset":
+                r.setRdbVisitor(new JsonlZSetRdbVisitor(r, conf, output, db, regexs, types, escape));
+                break;
             case "jsonlbz2":
                 r.setRdbVisitor(new JsonlBZ2RdbVisitor(r, conf, output, db, regexs, types, escape));
                 break;
