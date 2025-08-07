@@ -43,16 +43,16 @@ public class JsonlHashExplodeRdbVisitor extends JsonlRdbVisitor {
     }
 
     protected void emitHashJson(byte[] key, byte[] field, byte[] value) throws IOException {
-        OutputStreams.write('{', out);
+        Outputs.write('{', out);
         emitField("key", key);
 
-        OutputStreams.write(',', out);
+        Outputs.write(',', out);
         emitField("field", field);
 
-        OutputStreams.write(',', out);
+        Outputs.write(',', out);
         emitField("value", value);
 
-        OutputStreams.write('}', out);
+        Outputs.write('}', out);
     }
 
     @Override

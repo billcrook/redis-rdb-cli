@@ -24,20 +24,20 @@ public class JsonlZSetExplodeRdbVisitor extends JsonlRdbVisitor {
     }
 
     protected void emitZSetJson( byte[] key, byte[] element, double score){
-        OutputStreams.write('{', out);
+        Outputs.write('{', out);
         emitField("key", key);
 
-        OutputStreams.write(',', out);
+        Outputs.write(',', out);
         emitString("member".getBytes());
-        OutputStreams.write(':', out);
+        Outputs.write(':', out);
         emitString(element);
 
-        OutputStreams.write(',', out);
+        Outputs.write(',', out);
         emitString("score".getBytes());
-        OutputStreams.write(':', out);
+        Outputs.write(':', out);
         emitString(String.valueOf(score).getBytes());
 
-        OutputStreams.write('}', out);
+        Outputs.write('}', out);
     }
 
     @Override
