@@ -12,6 +12,7 @@ import com.moilioncircle.redis.replicator.io.RedisInputStream;
 import com.moilioncircle.redis.replicator.rdb.BaseRdbParser;
 import com.moilioncircle.redis.replicator.rdb.datatype.ContextKeyValuePair;
 import com.moilioncircle.redis.replicator.util.Strings;
+import static com.moilioncircle.redis.replicator.rdb.BaseRdbParser.StringHelper.listPackEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,6 +93,33 @@ public class JsonlZSetExplodeRdbVisitor extends JsonlRdbVisitor {
         }
         return context.valueOf(new DummyKeyValuePair());
     }
+
+   @Override
+    protected Event doApplyZSetListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        BaseRdbParser parser = new BaseRdbParser(in);
+        RedisInputStream listPack = new RedisInputStream(parser.rdbLoadPlainStringObject());
+        listPack.skip(4); // total-bytes
+        int len = listPack.readInt(2);
+        while (len > 0) {
+
+            if (!firstkey) {
+                separator();
+            }
+
+            firstkey = false;
+            byte[] element = listPackEntry(listPack);
+            len--;
+            double score = Double.valueOf(Strings.toString(listPackEntry(listPack)));
+            len--;
+            emitZSetJson(key, element, score);
+        }
+        int lpend = listPack.read(); // lp-end
+        if (lpend != 255) {
+            throw new AssertionError("listpack expect 255 but " + lpend);
+        }
+        return context.valueOf(new DummyKeyValuePair());
+    }
+
 
     @Override
     protected Event doApplyHash(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
