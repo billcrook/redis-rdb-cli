@@ -186,4 +186,34 @@ public class JsonlZSetExplodeRdbVisitor extends JsonlRdbVisitor {
         throw new UnsupportedOperationException("doApplyStreamListPacks, key: " + new String(key));
     }
 
+    @Override
+    protected Event doApplyStreamListPacks2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyStreamListPacks2, key: " + new String(key));
+    }
+
+    @Override
+    protected Event doApplyStreamListPacks3(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyStreamListPacks3, key: " + new String(key));
+    }
+
+    @Override
+    protected Event doApplySetListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplySetListPack, key: " + new String(key));
+    }
+
+    @Override
+    protected Event doApplyHashListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyHashListPack, key: " + new String(key));
+    }
+
+    @Override
+    protected Event doApplyHashMetadata(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyHashMetadata, key: " + new String(key));
+    }
+
+    @Override
+    protected Event doApplyHashListPackEx(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyHashListPackEx, key: " + new String(key));
+    }
+
 }
