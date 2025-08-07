@@ -18,6 +18,7 @@ package com.moilioncircle.redis.rdb.cli.ext.rct;
 
 import static com.moilioncircle.redis.replicator.Constants.RDB_TYPE_STREAM_LISTPACKS;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -49,7 +50,7 @@ public abstract class AbstractRctRdbVisitor extends BaseRdbVisitor {
 		replicator.addEventListener((rep, event) -> {
 			if (event instanceof PreRdbSyncEvent) {
 				Outputs.closeQuietly(this.out);
-				this.out = this.createOutputStream(args.output)
+				this.out = this.createOutputStream(args.output);
 			}
 		});
 		replicator.addCloseListener(rep -> Outputs.closeQuietly(out));
