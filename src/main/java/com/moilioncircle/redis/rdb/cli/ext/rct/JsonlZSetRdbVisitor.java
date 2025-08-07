@@ -1,9 +1,10 @@
 package com.moilioncircle.redis.rdb.cli.ext.rct;
 
+import com.moilioncircle.redis.rdb.cli.api.format.escape.Escaper;
+import com.moilioncircle.redis.rdb.cli.cmd.Args;
 import com.moilioncircle.redis.rdb.cli.conf.Configure;
 import com.moilioncircle.redis.rdb.cli.ext.datatype.DummyKeyValuePair;
 import com.moilioncircle.redis.rdb.cli.glossary.DataType;
-import com.moilioncircle.redis.rdb.cli.glossary.Escape;
 import com.moilioncircle.redis.rdb.cli.util.Outputs;
 import com.moilioncircle.redis.replicator.Replicator;
 import com.moilioncircle.redis.replicator.event.Event;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class JsonlZSetRdbVisitor extends JsonlRdbVisitor {
 
-    public JsonlZSetRdbVisitor(Replicator replicator, Configure configure, File out, List<Long> db, List<String> regexs, List<DataType> types, Escape escape) {
-        super(replicator, configure, out, db, regexs, types, escape);
+    public JsonlZSetRdbVisitor(Replicator replicator, Configure configure, Args.RctArgs args, Escaper escaper) {
+        super(replicator, configure, args, escaper);
     }
 
     /* override to produce json with member and score attributes */
@@ -40,7 +41,7 @@ public class JsonlZSetRdbVisitor extends JsonlRdbVisitor {
 
     /* override to produce an array of member/score elements */
     @Override
-    protected Event doApplyZSet(RedisInputStream in, int version, byte[] key, boolean contains, int type, ContextKeyValuePair context) throws IOException {
+    protected Event doApplyZSet(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
             Outputs.write('[', out); // CHANGED HERE
             BaseRdbParser parser = new BaseRdbParser(in);
@@ -63,7 +64,7 @@ public class JsonlZSetRdbVisitor extends JsonlRdbVisitor {
 
     /* override to produce an array of member/score elements */
     @Override
-    protected Event doApplyZSet2(RedisInputStream in, int version, byte[] key, boolean contains, int type, ContextKeyValuePair context) throws IOException {
+    protected Event doApplyZSet2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
             Outputs.write('[', out); // CHANGED HERE
             BaseRdbParser parser = new BaseRdbParser(in);
@@ -86,7 +87,7 @@ public class JsonlZSetRdbVisitor extends JsonlRdbVisitor {
 
     /* override to produce an array of member/score elements */
     @Override
-    protected Event doApplyZSetZipList(RedisInputStream in, int version, byte[] key, boolean contains, int type, ContextKeyValuePair context) throws IOException {
+    protected Event doApplyZSetZipList(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         json(context, key, type, () -> {
             Outputs.write('[', out); // CHANGED HERE
             BaseRdbParser parser = new BaseRdbParser(in);

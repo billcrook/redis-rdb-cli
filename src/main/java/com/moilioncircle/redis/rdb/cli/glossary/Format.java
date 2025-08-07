@@ -81,21 +81,21 @@ public class Format {
             case "key":
                 r.setRdbVisitor(new KeyRdbVisitor(r, configure, args, getEscape(escape, configure)));
             case "jsonlzsetexplode":
-                r.setRdbVisitor(new JsonlZSetExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
+                r.setRdbVisitor(new JsonlZSetExplodeRdbVisitor(r, configure, args, getEscape(escape, new JsonEscaper(), configure)));
                 break;
             case "jsonlhashexplode":
-                r.setRdbVisitor(new JsonlHashExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
+                r.setRdbVisitor(new JsonlHashExplodeRdbVisitor(r, configure, args, getEscape(escape, new JsonEscaper(), configure)));
                 break;
             case "jsonlkeyedhashexplode":
-                r.setRdbVisitor(new JsonlKeyedHashExplodeRdbVisitor(r, conf, output, db, regexs, types, escape));
+                r.setRdbVisitor(new JsonlKeyedHashExplodeRdbVisitor(r, configure, args, getEscape(escape, new JsonEscaper(), configure)));
                 break;
             case "keyval":
                 r.setRdbVisitor(new KeyValRdbVisitor(r, configure, args, getEscape(escape, configure)));
             case "jsonlzset":
-                r.setRdbVisitor(new JsonlZSetRdbVisitor(r, conf, output, db, regexs, types, escape));
+                r.setRdbVisitor(new JsonlZSetRdbVisitor(r, configure, args, getEscape(escape, new JsonEscaper(), configure)));
                 break;
             case "jsonlbz2":
-                r.setRdbVisitor(new JsonlBZ2RdbVisitor(r, conf, output, db, regexs, types, escape));
+                r.setRdbVisitor(new JsonlBZ2RdbVisitor(r, configure, args, getEscape(escape, new JsonEscaper(), configure)));
                 break;
             case "mem":
                 r.setRdbVisitor(new MemoryRdbVisitor(r, configure, args, getEscape(escape, configure)));

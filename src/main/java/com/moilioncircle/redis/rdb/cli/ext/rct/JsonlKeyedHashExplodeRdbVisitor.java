@@ -1,8 +1,9 @@
 package com.moilioncircle.redis.rdb.cli.ext.rct;
 
+import com.moilioncircle.redis.rdb.cli.api.format.escape.Escaper;
+import com.moilioncircle.redis.rdb.cli.cmd.Args;
 import com.moilioncircle.redis.rdb.cli.conf.Configure;
 import com.moilioncircle.redis.rdb.cli.glossary.DataType;
-import com.moilioncircle.redis.rdb.cli.glossary.Escape;
 import com.moilioncircle.redis.rdb.cli.util.Outputs;
 import com.moilioncircle.redis.replicator.Replicator;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class JsonlKeyedHashExplodeRdbVisitor extends JsonlHashExplodeRdbVisitor {
 
-    public JsonlKeyedHashExplodeRdbVisitor(Replicator replicator, Configure configure, File out, List<Long> db, List<String> regexs, List<DataType> types, Escape escape) {
-        super(replicator, configure, out, db, regexs, types, escape);
+    public JsonlKeyedHashExplodeRdbVisitor(Replicator replicator, Configure configure, Args.RctArgs args, Escaper escaper) {
+        super(replicator, configure, args, escaper);
     }
 
     protected void emitHashJson(byte[] key, byte[] field, byte[] value) throws java.io.IOException {
