@@ -11,6 +11,7 @@ import com.moilioncircle.redis.replicator.event.Event;
 import com.moilioncircle.redis.replicator.io.RedisInputStream;
 import com.moilioncircle.redis.replicator.rdb.BaseRdbParser;
 import com.moilioncircle.redis.replicator.rdb.datatype.ContextKeyValuePair;
+import static com.moilioncircle.redis.replicator.rdb.BaseRdbParser.StringHelper.listPackEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,6 +86,34 @@ public class JsonlHashExplodeRdbVisitor extends JsonlRdbVisitor {
     }
 
     @Override
+    protected Event doApplyHashListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+
+        BaseRdbParser parser = new BaseRdbParser(in);
+        RedisInputStream listPack = new RedisInputStream(parser.rdbLoadPlainStringObject());
+
+        listPack.skip(4); // total-bytes
+        int len = listPack.readInt(2);
+        while (len > 0) {
+            if (!firstkey) {
+                separator();
+            }
+
+            firstkey = false;
+            byte[] field = listPackEntry(listPack);
+            len--;
+            byte[] value = listPackEntry(listPack);
+            len--;
+            emitHashJson(key, field, value);
+        }
+        int lpend = listPack.read(); // lp-end
+        if (lpend != 255) {
+            throw new AssertionError("listpack expect 255 but " + lpend);
+        }
+
+        return context.valueOf(new DummyKeyValuePair());
+    }
+
+    @Override
     protected Event doApplyString(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         throw new UnsupportedOperationException("doApplyString");
     }
@@ -148,4 +177,40 @@ public class JsonlHashExplodeRdbVisitor extends JsonlRdbVisitor {
     protected Event doApplyStreamListPacks(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
         throw new UnsupportedOperationException("doApplyStreamListPacks");
     }
+
+    @Override
+    protected Event doApplySetListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplySetListPack");
+    }
+
+    @Override
+    protected Event doApplyZSetListPack(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyZSetListPack");
+    }
+
+    @Override
+    protected Event doApplyListQuickList2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyListQuickList2");
+    }
+
+    @Override
+    protected Event doApplyHashMetadata(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyHashMetadata");
+    }
+
+    @Override
+    protected Event doApplyHashListPackEx(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyHashListPackEx");
+    }
+
+    @Override
+    protected Event doApplyStreamListPacks2(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyStreamListPacks2");
+    }
+
+    @Override
+    protected Event doApplyStreamListPacks3(RedisInputStream in, int version, byte[] key, int type, ContextKeyValuePair context) throws IOException {
+        throw new UnsupportedOperationException("doApplyStreamListPacks3");
+    }
+
 }
